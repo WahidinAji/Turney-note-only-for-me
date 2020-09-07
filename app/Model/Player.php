@@ -20,4 +20,9 @@ class Player extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     public $timestamps = \true;
+
+    public function getAvatar()
+    {
+        return !$this->ava_url ? asset('images/avatar/default.png') : $this->ava_url;
+    }
 }
