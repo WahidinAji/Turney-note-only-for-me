@@ -11,7 +11,7 @@
         <div class="panel-body">
           <h2>Sign Up</h2>
           <br>
-          <form accept-charset="UTF-8" role="form" action="{{url('post-register')}}" method="POST">
+          <form accept-charset="UTF-8" role="form" action="{{URL::route('post.register')}}" method="POST">
             {{ csrf_field() }}
           <fieldset>
             <div class="form-group">
@@ -58,7 +58,7 @@
             </div>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
             <br>
-            <p class="text-center">Have an account ?  <a href="{{url('login')}}">Log in here</a></p>
+            <p class="text-center">Have an account ?  <a href="{{URL::route('login')}}">Log in here</a></p>
           </fieldset>
           </form>
         </div>

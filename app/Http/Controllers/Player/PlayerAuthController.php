@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Player;
 
 use App\Http\Controllers\Controller;
+use App\Model\Game;
 use App\Model\Player;
 use Illuminate\Http\Request;
 use Validator, Redirect, Response;
@@ -32,13 +33,19 @@ class PlayerAuthController extends Controller
       'password' => 'required',
     ]);
     $player = Player::where('email', $request->email)->first();
-    // dd(Hash::check($request->password, $player->password));
+    // // dd(Hash::check($request->password, $player->password));
+    // if (Auth::guard('player')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
+    //   // return \response()->json($player);
+    //   return \view('player.dashboard');
+    // } else {
+    //   return Redirect::to("login") //routing login jika user tidak ada
+    //     ->withSuccess('Oppes! You have entered invalid credentials');
+    // }
+
     if (Auth::guard('player')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-      // return \view('player.auth.dashboard'); //view dashboard
-      return \view('player.dashboard');
+      return \redirect('dashboard'); //redirect to method dashboard
     } else {
-      return Redirect::to("login") //routing login jika user tidak ada
-        ->withSuccess('Oppes! You have entered invalid credentials');
+      return Redirect::to("login"); //routing login jika user tidak ada
     }
   }
   public function postRegister(Request $request)
@@ -63,13 +70,13 @@ class PlayerAuthController extends Controller
     $check = $this->create($data);
     return Redirect::to("dashboard")->withSuccess('Great! U have successfully loggedin'); //routing dashboard
   }
-  // public function dashboard()
-  // {
-  //   if (Auth::check()) {
-  //     return view('player.auth.dashboard'); //view dashboard
-  //   }
-  //   return Redirect::to("login")->withSuccess('Opps! You do not have access'); //routing login
-  // }
+  public function dashboard()
+  {
+    if (Auth::guard('player')->check()) {
+      return view('player.dashboard'); //view dashboard
+    }
+    return Redirect::to("login")->withSuccess('Opps! You do not have access'); //routing login
+  }
   public function create(array $data)
   {
     return Player::create([
@@ -86,5 +93,15 @@ class PlayerAuthController extends Controller
     Session::flush();
     Auth::logout();
     return Redirect('login'); //routing login
+  }
+  public function profile()
+  {
+    if (Auth::guard('player')->check()) {
+      $game = Game::select('name', 'platform')->get();
+      // \dd($game);
+      return \view('player.profile', \compact('game'));
+    } else {
+      \dd('hahah');
+    }
   }
 }

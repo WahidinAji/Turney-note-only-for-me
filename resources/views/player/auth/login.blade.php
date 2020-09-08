@@ -42,7 +42,7 @@
             </span>
             <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
             <br>
-            <p>Not a member yet ?  <a href="{{url('register')}}" class="primary">Sign Up</a></p>
+            <p>Not a member yet ?  <a href="{{URL::route('register')}}" class="primary">Sign Up</a></p>
           </fieldset>
           </form>
         </div>

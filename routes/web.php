@@ -14,21 +14,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Route::middleware(['auth:player'])->group(function () {
-Route::get('/', function () {
-    return view('player.index');
-});
+// Route::get('/', function () {
+//     return view('player.index');
+// });
 // });
 Route::group(['auth', 'players'], function () {
-    // Route::get('/anu', 'INI CONTOH');
     Route::get('/welcome', function () {
         return view('welcome');
     });
     Route::namespace('Player')->group(function () {
-        Route::get('login', 'PlayerAuthController@index');
-        Route::post('dashboard', 'PlayerAuthController@postLogin')->name('post.login');
-        Route::get('register', 'PlayerAuthController@register');
-        Route::post('post-register', 'PlayerAuthController@postRegister');
-        // Route::get('dashboard', 'PlayerAuthController@dashboard');
-        Route::get('logout', 'PlayerAuthController@logout');
+        //Auth Player
+        Route::get('login', 'PlayerAuthController@index')->name('login');
+        Route::post('player-login', 'PlayerAuthController@postLogin')->name('post.login');
+        Route::get('register', 'PlayerAuthController@register')->name('register');
+        Route::post('player-register', 'PlayerAuthController@postRegister')->name('post.register');
+        Route::get('dashboard', 'PlayerAuthController@dashboard')->name('dashboard');
+        Route::get('logout', 'PlayerAuthController@logout')->name('logout');
+
+        //Profile
+        Route::get('profile', 'PlayerAuthController@profile')->name('profile');
     });
 });
