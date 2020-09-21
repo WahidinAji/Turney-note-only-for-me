@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 // });
 // });
 Route::group(['auth', 'players'], function () {
-    Route::get('/welcome', function () {
+    Route::get('/', function () {
         return view('welcome');
     });
     Route::namespace('Player')->group(function () {
@@ -34,4 +34,16 @@ Route::group(['auth', 'players'], function () {
         //Profile
         Route::get('profile', 'PlayerAuthController@profile')->name('profile');
     });
+    Route::get('friend', 'FriendController@index')->name('friend');
+    // Route::get('tournament', 'TournamentController@index')->name('friend');
+    Route::get('tournament', function () {
+        return view('tournament.index');
+    })->name('tournament');
 });
+
+Route::get('game', 'GameController@index');
+Route::get('game/create', 'GameController@create')->name('game.create');
+Route::post('game', 'GameController@store')->name('game.store');
+Route::get('game/{game}/edit', 'GameController@edit')->name('game.edit');
+Route::put('game/{game}', 'GameController@update')->name('game.update');
+Route::delete('game/{game}', 'GameController@destroy')->name('game.destroy');

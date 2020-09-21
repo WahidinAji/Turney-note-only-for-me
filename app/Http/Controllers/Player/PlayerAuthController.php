@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Player;
 use App\Http\Controllers\Controller;
 use App\Model\Game;
 use App\Model\Player;
+use App\Model\PlayerGame;
 use Illuminate\Http\Request;
 use Validator, Redirect, Response;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Session;
 
@@ -43,7 +45,7 @@ class PlayerAuthController extends Controller
     // }
 
     if (Auth::guard('player')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-      return \redirect('dashboard'); //redirect to method dashboard
+      return \redirect('dashboard'); //redirect to url link dashboard
     } else {
       return Redirect::to("login"); //routing login jika user tidak ada
     }
@@ -97,7 +99,14 @@ class PlayerAuthController extends Controller
   public function profile()
   {
     if (Auth::guard('player')->check()) {
-      $game = Game::select('name', 'platform')->get();
+      // $player_game = PlayerGame::all()->join('games','player_games.players_id');
+      // $game = Game::select('name', 'platform')->get();
+      $game = DB::table('players')
+        ->join('player_games', 'player_games.players_id', '=', 'players.id')
+        ->select('players.*', 'player_games.*')
+        ->get();
+      // $game = DB::table('players')->get();
+
       // \dd($game);
       return \view('player.profile', \compact('game'));
     } else {

@@ -8,12 +8,19 @@
         <div class="row">
           <div class="col-xs-6 col-sm-4"><img src="{{ asset('assets/img/apple-icon.png') }}" width="40%" style="margin-top: 5%; margin-bottom: 5%; border-radius: 10px; margin-left: 10%;"></div>
           <div class="col-xs-6 col-sm-4" style="margin-left: -10%; ">
-            <b><h2 style="color: white;">Huda</h2></b>
+            <b><h2 style="color: white;">{{ Auth::guard('player')->user()->name }}</h2></b>
             <br>
-            <p style="color: white;">Magelang</p>
+            @if (Auth::guard('player')->user()->address !== null)
+            <p style="color: white;">{{ Auth::guard('player')->user()->address }}</p>
+            @else
+            <p style="color: white;">Alamat kusung!!!</p>    
+            @endif
             <br>
-            <p style="color: white;">1980 </p>
-
+            @if (Auth::guard('player')->user()->address !== null)
+            <p style="color: white;">{{ Auth::guard('player')->user()->contact }}</p>
+            @else
+            <p style="color: white;">Contact kusung!!!</p>    
+            @endif
           </div>
           <!-- Optional: clear the XS cols if their content doesn't match in height -->
           
@@ -56,15 +63,19 @@
                     <div class="panel-body">
                     <div class="row" style="margin-left: 5%;">
                     <br>
-                    <p>Name Abraham Claire</p>
+                    <p>{{ Auth::guard('player')->user()->name }}</p>
                     <br>
                     <p>Country Indonesia</p>
                     <br>
                     <p>Gender Male</p>
                     <br>
-                    <p>Email nongski@nongski.com</p>
+                    <p>{{ Auth::guard('player')->user()->email }}</p>
                     <br>
-                    <p>Phone n/a</p>
+                    @if (Auth::guard('player')->user()->contact === true)
+                    <p>{{ Auth::guard('player')->user()->contact }}</p>                        
+                    @else
+                    <p>nomor telepon belum dilengkapi!!</p>                        
+                    @endif
                     <br>
                     </div>
                     </div>
@@ -149,48 +160,35 @@
                     <div class="table-responsive">          
                     <table class="table">
                       <thead>
-                      <tr>
-                      <th>Game</th>
-                      <th>Name</th>
-                      <th>Date</th>
-                      <th>Team</th>
-                      <th>Participants</th>
-                      <th>Status</th>
-                      </tr>
+                        <tr>
+                          <th>Game</th>
+                          <th>Name</th>
+                          <th>Date</th>
+                          <th>Team</th>
+                          <th>Participants</th>
+                          <th>Status</th>
+                        </tr>
                       </thead>
                       <tbody>
-                      <tr>
-                      <td>Mobile Legend</td>
-                      <td>ML Nongski Tournament</td>
-                      <td>August 13, 2020 @3:00 am</td>
-                      <td>Liquor</td>
-                      <td>164 participants</td>
-                      <td>winner</td>
-                      </tr>
-                      <tr>
-                      <td>Mobile Legend</td>
-                      <td>ML Nongski Tournament</td>
-                      <td>August 13, 2020 @3:00 am</td>
-                      <td>Liquor</td>
-                      <td>164 participants</td>
-                      <td>winner</td>
-                      </tr>
-                      <tr>
-                      <td>Mobile Legend</td>
-                      <td>ML Nongski Tournament</td>
-                      <td>August 13, 2020 @3:00 am</td>
-                      <td>Liquor</td>
-                      <td>164 participants</td>
-                      <td>winner</td>
-                      </tr>
-                      <tr>
-                      <td>Mobile Legend</td>
-                      <td>ML Nongski Tournament</td>
-                      <td>August 13, 2020 @3:00 am</td>
-                      <td>Liquor</td>
-                      <td>164 participants</td>
-                      <td>winner</td>
-                      </tr>
+                      @forelse ($game as $games)
+                        <tr>
+                          <td>{{ $games->platform }}</td>
+                          <td>{{ $games->name }}</td>
+                          <td>August 13, 2020 @3:00 am</td>
+                          <td>Liquor</td>
+                          <td>164 participants</td>
+                          <td>winner</td>
+                        </tr>
+                      @empty                          
+                        <tr>
+                          <td>Game Platform Kusung!!</td>
+                          <td>Name Turney Kusung!!</td>
+                          <td>August 13, 2020 @3:00 am</td>
+                          <td>Liquor</td>
+                          <td>164 participants</td>
+                          <td>winner</td>
+                        </tr>
+                      @endforelse
                       </tbody>
                     </table>
                     </div>
